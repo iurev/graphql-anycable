@@ -10,7 +10,7 @@ on:
 
 jobs:
   test:
-    name: "GraphQL-Ruby ${{ matrix.graphql }} on Ruby ${{ matrix.ruby }} (use_client_id: ${{ matrix.client_id }})"
+    name: "GraphQL-Ruby ${{ matrix.graphql }} on Ruby ${{ matrix.ruby }} (use_client_id: ${{ matrix.client_id }}) Redis v${{ matrix.redis_version }}"
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
