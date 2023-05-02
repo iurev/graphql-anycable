@@ -35,6 +35,7 @@ jobs:
         GRAPHQL_RUBY_VERSION: ${{ matrix.graphql }}
         ANYCABLE_RAILS_VERSION: ${{ matrix.anycable_rails }}
         GRAPHQL_ANYCABLE_USE_CLIENT_PROVIDED_UNIQ_ID: ${{ matrix.client_id }}
+        REDIS_URL: redis://localhost:6379
     services:
       redis:
         image: redis
