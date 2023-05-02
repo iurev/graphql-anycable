@@ -10,7 +10,7 @@ on:
 
 jobs:
   test:
-    name: "GraphQL-Ruby ${{ matrix.graphql }} on Ruby ${{ matrix.ruby }} (use_client_id: ${{ matrix.client_id }}) Redis v${{ matrix.redis_version }}"
+    name: "GraphQL-Ruby ${{ matrix.graphql }} on Ruby ${{ matrix.ruby_version }} (use_client_id: ${{ matrix.client_id }}) Redis v${{ matrix.redis_version }}"
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -28,7 +28,7 @@ jobs:
             client_id: 'true'
             anycable_rails: '~> 1.1.0'
     container:
-      image: ruby:${{ matrix.ruby }}
+      image: ruby:${{ matrix.ruby_version }}
       env:
         CI: true
         GRAPHQL_RUBY_VERSION: ${{ matrix.graphql }}
@@ -48,10 +48,10 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: vendor/bundle
-          key: bundle-${{ matrix.ruby }}-${{ matrix.graphql }}-${{ matrix.anycable }}-${{ hashFiles('**/*.gemspec') }}-${{ hashFiles('**/Gemfile') }}
+          key: bundle-${{ matrix.ruby_version }}-${{ matrix.graphql }}-${{ matrix.anycable }}-${{ hashFiles('**/*.gemspec') }}-${{ hashFiles('**/Gemfile') }}
           restore-keys: |
-            bundle-${{ matrix.ruby }}-${{ matrix.graphql }}-${{ matrix.anycable }}-
-            bundle-${{ matrix.ruby }}-
+            bundle-${{ matrix.ruby_version }}-${{ matrix.graphql }}-${{ matrix.anycable }}-
+            bundle-${{ matrix.ruby_version }}-
       - name: Upgrade Bundler to 2.0 (for older Rubies)
         run: gem install bundler -v '~> 2.0'
       - name: Bundle install
