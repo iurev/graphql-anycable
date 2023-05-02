@@ -9,7 +9,6 @@ require "pry"
 require_relative "support/graphql_schema"
 require_relative "redis_helper"
 
-
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = ".rspec_status"
