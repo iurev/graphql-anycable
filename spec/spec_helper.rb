@@ -7,6 +7,8 @@ require "graphql/anycable"
 require "pry"
 
 require_relative "support/graphql_schema"
+require_relative "redis_helper"
+
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -26,9 +28,4 @@ RSpec.configure do |config|
 
   Kernel.srand config.seed
   config.order = :random
-
-  config.after(:example) do
-    redis = GraphQL::AnyCable.redis
-    redis.flushall
-  end
 end
