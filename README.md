@@ -169,7 +169,7 @@ GraphQL-AnyCable uses [anyway_config] to configure itself. There are several pos
     ```
 
     ```bash
-    REDIS_URL=redis://localhost:6379/5 rspec
+    REDIS_URL=redis://localhost:6379/5 bundle exec rspec
     ```
 
 
