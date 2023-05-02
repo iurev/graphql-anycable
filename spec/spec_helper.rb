@@ -26,4 +26,9 @@ RSpec.configure do |config|
 
   Kernel.srand config.seed
   config.order = :random
+
+  config.after(:example) do
+    redis = GraphQL::AnyCable.redis
+    redis.flushall
+  end
 end
