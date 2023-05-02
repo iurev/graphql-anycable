@@ -45,8 +45,8 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
         with:
           path: vendor/bundle
           key: bundle-${{ matrix.ruby }}-${{ matrix.graphql }}-${{ matrix.anycable }}-${{ hashFiles('**/*.gemspec') }}-${{ hashFiles('**/Gemfile') }}
