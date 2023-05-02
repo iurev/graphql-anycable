@@ -5,6 +5,7 @@ def configure_test_redis_db
   channel = AnyCable.broadcast_adapter.channel
   new_db_index = conn[:db] + 1 # raises error if > number of redis databases
   url = "redis://#{conn[:host]}:#{conn[:port]}/#{new_db_index}"
+  url = ENV.fetch("REDIS_URL", url)
 
   AnyCable.broadcast_adapter = :redis, { url: url, channel: channel }
 end

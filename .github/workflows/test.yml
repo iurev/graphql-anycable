@@ -35,6 +35,16 @@ jobs:
         GRAPHQL_RUBY_VERSION: ${{ matrix.graphql }}
         ANYCABLE_RAILS_VERSION: ${{ matrix.anycable_rails }}
         GRAPHQL_ANYCABLE_USE_CLIENT_PROVIDED_UNIQ_ID: ${{ matrix.client_id }}
+    services:
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
     steps:
       - uses: actions/checkout@v2
       - uses: actions/cache@v2
