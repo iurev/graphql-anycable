@@ -1,4 +1,6 @@
 ---
+inherit_from: .rubocop_todo.yml
+
 require:
 - rubocop-rspec
 
@@ -10,8 +12,8 @@ Metrics/BlockLength:
   - "Gemfile"
   - "spec/**/*"
 
-Style/BracesAroundHashParameters:
-  EnforcedStyle: context_dependent
+# Style/BracesAroundHashParameters:
+#   EnforcedStyle: context_dependent
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
