@@ -4,8 +4,6 @@ require "anycable"
 require "graphql/subscriptions"
 require "graphql/anycable/errors"
 
-# rubocop: disable Metrics/AbcSize, Metrics/LineLength, Metrics/MethodLength
-
 # A subscriptions implementation that sends data as AnyCable broadcastings.
 #
 # Since AnyCable is aimed to be compatible with ActionCable, this adapter
@@ -162,7 +160,8 @@ module GraphQL
           "#{SUBSCRIPTION_PREFIX}#{subscription_id}",
           :query_string, :variables, :context, :operation_name
         ).tap do |subscription|
-          return if subscription.values.all?(&:nil?) # Redis returns hash with all nils for missing key
+          # Redis returns hash with all nils for missing key
+          return if subscription.values.all?(&:nil?)
 
           subscription[:context] = @serializer.load(subscription[:context])
           subscription[:variables] = JSON.parse(subscription[:variables])
@@ -241,4 +240,3 @@ module GraphQL
     end
   end
 end
-# rubocop: enable Metrics/AbcSize, Metrics/LineLength, Metrics/MethodLength
