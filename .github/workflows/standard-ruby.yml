@@ -1,36 +1,20 @@
 name: Standard Ruby
 
-on:
-  pull_request:
-  push:
-    branches:
-      - '**'
+on: [push, pull_request]
 
 jobs:
-  test:
+  lint:
     name: "Standard Ruby"
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - ruby: "3.2.2"
-    container:
-      image: ruby:${{ matrix.ruby }}
-      env:
-        CI: true
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/cache@v3
+      - uses: ruby/setup-ruby@v1
         with:
-          path: vendor/bundle
-          key: bundle-${{ matrix.ruby }}-${{ hashFiles('**/*.gemspec') }}-${{ hashFiles('**/Gemfile') }}
-          restore-keys: |
-            bundle-${{ matrix.ruby }}-
-      - name: Bundle install
-        run: |
-          bundle config path vendor/bundle
-          bundle install
-          bundle update
+          ruby-version: '3.2'
+          bundler-cache: true
+      - name: Bundle Update
+        run: bundle update
       - name: Run Standard Ruby
         run: bundle exec standardrb
