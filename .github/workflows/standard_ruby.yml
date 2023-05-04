@@ -1,4 +1,4 @@
-name: Rubocop
+name: Standard Ruby
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    name: "Rubocop"
+    name: "Standard Ruby"
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -35,5 +35,5 @@ jobs:
           bundle config path vendor/bundle
           bundle install
           bundle update
-      - name: Run Rubocop
-        run: bundle exec rubocop
+      - name: Run Standard Ruby
+        run: bundle exec standardrb
