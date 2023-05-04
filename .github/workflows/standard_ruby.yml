@@ -24,12 +24,9 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: vendor/bundle
-          key: bundle-${{ matrix.ruby }}-${{ matrix.graphql }}-${{ matrix.anycable }}-${{ hashFiles('**/*.gemspec') }}-${{ hashFiles('**/Gemfile') }}
+          key: bundle-${{ matrix.ruby }}-${{ hashFiles('**/*.gemspec') }}-${{ hashFiles('**/Gemfile') }}
           restore-keys: |
-            bundle-${{ matrix.ruby }}-${{ matrix.graphql }}-${{ matrix.anycable }}-
             bundle-${{ matrix.ruby }}-
-      - name: Upgrade Bundler to 2.0 (for older Rubies)
-        run: gem install bundler -v '~> 2.0'
       - name: Bundle install
         run: |
           bundle config path vendor/bundle
