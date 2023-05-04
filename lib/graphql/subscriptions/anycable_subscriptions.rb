@@ -56,10 +56,10 @@ module GraphQL
 
       def_delegators :"GraphQL::AnyCable", :redis, :config
 
-      SUBSCRIPTION_PREFIX  = "graphql-subscription:"  # HASH: Stores subscription data: query, context, …
-      FINGERPRINTS_PREFIX  = "graphql-fingerprints:"  # ZSET: To get fingerprints by topic
+      SUBSCRIPTION_PREFIX = "graphql-subscription:"  # HASH: Stores subscription data: query, context, …
+      FINGERPRINTS_PREFIX = "graphql-fingerprints:"  # ZSET: To get fingerprints by topic
       SUBSCRIPTIONS_PREFIX = "graphql-subscriptions:" # SET:  To get subscriptions by fingerprint
-      CHANNEL_PREFIX       = "graphql-channel:"       # SET:  Auxiliary structure for whole channel's subscriptions cleanup
+      CHANNEL_PREFIX = "graphql-channel:"       # SET:  Auxiliary structure for whole channel's subscriptions cleanup
 
       # @param serializer [<#dump(obj), #load(string)] Used for serializing messages before handing them to `.broadcast(msg)`
       def initialize(serializer: Serialize, **rest)
@@ -73,20 +73,20 @@ module GraphQL
         fingerprints = redis.zrange(FINGERPRINTS_PREFIX + event.topic, 0, -1)
         return if fingerprints.empty?
 
-        fingerprint_subscription_ids = Hash[fingerprints.zip(
+        fingerprint_subscription_ids = fingerprints.zip(
           redis.pipelined do |pipeline|
             fingerprints.map do |fingerprint|
               pipeline.smembers(SUBSCRIPTIONS_PREFIX + fingerprint)
             end
           end
-        )]
+        ).to_h
 
         fingerprint_subscription_ids.each do |fingerprint, subscription_ids|
           execute_grouped(fingerprint, subscription_ids, event, object)
         end
 
         # Call to +trigger+ returns this. Convenient for playing in console
-        Hash[fingerprint_subscription_ids.map { |k,v| [k, v.size] }]
+        fingerprint_subscription_ids.map { |k, v| [k, v.size] }.to_h
       end
 
       # The fingerprint has told us that this response should be shared by all subscribers,
@@ -114,7 +114,7 @@ module GraphQL
       # @param strean_key [String]
       # @param result [#to_h] result to send to clients
       def deliver(stream_key, result)
-        payload = { result: result.to_h, more: true }.to_json
+        payload = {result: result.to_h, more: true}.to_json
         anycable.broadcast(stream_key, payload)
       end
 
@@ -131,7 +131,6 @@ module GraphQL
         # Store subscription_id in the channel state to cleanup on disconnect
         write_subscription_id(channel, channel_uniq_id)
 
-
         events.each do |event|
           channel.stream_from(SUBSCRIPTIONS_PREFIX + event.fingerprint)
         end
@@ -141,7 +140,7 @@ module GraphQL
           variables: query.provided_variables.to_json,
           context: @serializer.dump(context.to_h),
           operation_name: query.operation_name,
-          events: events.map { |e| [e.topic, e.fingerprint] }.to_h.to_json,
+          events: events.map { |e| [e.topic, e.fingerprint] }.to_h.to_json
         }
 
         redis.multi do |pipeline|
@@ -187,7 +186,7 @@ module GraphQL
         # Clean up fingerprints that doesn't have any subscriptions left
         redis.pipelined do |pipeline|
           fingerprint_subscriptions.each do |key, score|
-            pipeline.zremrangebyscore(key, '-inf', '0') if score.value.zero?
+            pipeline.zremrangebyscore(key, "-inf", "0") if score.value.zero?
           end
         end
       end

@@ -1,4 +1,3 @@
-
 # frozen_string_literal: true
 
 require "integration_helper"
@@ -156,27 +155,27 @@ RSpec.describe "non-broadcastable subscriptions" do
         # first, subscribe to obtain the connection state
         subscribe_response = handler.handle(:command, request)
         expect(subscribe_response).to be_success
-  
+
         expect(redis.keys("graphql-subscription:*").size).to eq(1)
         expect(redis.keys("graphql-subscriptions:*").size).to eq(1)
-  
+
         # update request context
         request.connection_identifiers = identifiers.merge(current_user: "alice").to_json
-  
+
         response = handler.handle(:command, request)
-  
+
         expect(redis.keys("graphql-subscription:*").size).to eq(2)
         expect(redis.keys("graphql-subscriptions:*").size).to eq(2)
-  
+
         istate = response.istate
-  
+
         request.command = "unsubscribe"
         request.data = ""
         request.istate = istate
-  
+
         response = handler.handle(:command, request)
         expect(response).to be_success
-  
+
         expect(redis.keys("graphql-subscription:*").size).to eq(1)
         expect(redis.keys("graphql-subscriptions:*").size).to eq(1)
       end
