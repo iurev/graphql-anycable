@@ -17,4 +17,4 @@ jobs:
       - name: Bundle Update
         run: bundle update
       - name: Run Rubocop
-        run: bundle exec Rubocop
+        run: bundle exec rubocop
